@@ -16,7 +16,6 @@ public class SimpleController {
 
     @GetMapping(value = {"/"})
     public ResponseEntity<GetServerStatusResponse> getServerStatus() {
-
         final var client = WebClient.create("http://169.254.169.254");
         final var ip = client.get()
                 .uri("/latest/meta-data/local-ipv4")
@@ -24,6 +23,7 @@ public class SimpleController {
                 .bodyToMono(String.class)
                 .doOnError(error -> log.error("An error has occurred {}", error.getMessage()))
                 .block();
+
 
         final var response = GetServerStatusResponse.builder()
                 .serverIp(ip)
