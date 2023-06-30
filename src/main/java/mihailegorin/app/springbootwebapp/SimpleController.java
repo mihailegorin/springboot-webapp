@@ -16,7 +16,6 @@ public class SimpleController {
 
     @GetMapping(value = {"/"})
     public ResponseEntity<GetServerStatusResponse> getServerStatus() {
-
         final var client = WebClient.create("http://169.254.169.254");
         final var ip = client.get()
                 .uri("/latest/meta-data/local-ipv4")
