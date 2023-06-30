@@ -3,7 +3,7 @@
 # --------------------------------------------------
 
 module "application" {
-  source              = "./app_deployment"
+  source              = "infrastructure"
   application_name    = "Spring Boot Application"
   application_version = var.application_version
   bucket_name         = "mihail-egorin.spring-boot-webapp"
