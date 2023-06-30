@@ -12,6 +12,7 @@ public class SimpleController {
 
     @GetMapping(value = {"/"})
     public ResponseEntity<String> getServerStatus() {
+
         var res = "Server is working!   |   "
                 .concat("Server time: " + new Date() + "    |   ")
                 .concat("Have a nice day :)");
