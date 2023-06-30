@@ -4,7 +4,7 @@
 
 module "application" {
   source              = "./infrastructure"
-  application_name    = "Spring Boot Application"
+  application_name    = "Spring-Boot-Application" # only alphanumeric characters and ()./_- symbols
   application_version = var.application_version
   bucket_name         = "mihail-egorin.spring-boot-webapp"
   worker_ami          = "ami-02ac0f946cb74e8da"
