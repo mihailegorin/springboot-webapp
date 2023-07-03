@@ -3,15 +3,39 @@
 # --------------------------------------------------
 
 module "application" {
-  source              = "./infrastructure"
-  application_name    = "Spring-Boot-Application" # only alphanumeric characters and ()./_- symbols
-  application_version = var.application_version
-  bucket_name         = "mihail-egorin.spring-boot-webapp"
-  worker_ami          = "ami-02ac0f946cb74e8da"
-  instance_profile    = "spring-boot-app"
-  backend_port        = 8080
+  source                 = "./infrastructure"
+  application_name       = "Spring-Boot-Application"
+  application_version    = var.application_version
+  application_worker_ami = "ami-01912afb5d1edc9b1"
+  bucket_name            = "mihail-egorin.spring-boot-webapp"
+  backend_port           = 8080
+  subnets                = [
+    {
+      az     = "us-west-2a",
+      prefix = "10.1.1.0/24"
+    },
+    {
+      az     = "us-west-2b",
+      prefix = "10.1.2.0/24"
+    },
+    {
+      az     = "us-west-2c",
+      prefix = "10.1.3.0/24"
+    }
+  ]
 }
 
+# --------------------------------------------------
+variable "application_version" {
+  type    = string
+  default = "028a139"
+}
+# --------------------------------------------------
+output "web_loadbalancer_url" {
+  value = module.application.web_loadbalancer_url
+}
+# --------------------------------------------------
+# Providers
 # --------------------------------------------------
 
 terraform {
@@ -29,7 +53,7 @@ terraform {
 }
 
 provider "aws" {
-  region = "eu-central-1"
+  region = "us-west-2"
 
   default_tags {
     tags = {

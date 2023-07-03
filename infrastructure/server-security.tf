@@ -1,16 +1,16 @@
-resource "aws_security_group" "web" {
-  name        = "${var.application_name}-Server-SG"
-  description = "Manage traffic to app server"
+resource "aws_security_group" "elb_security_group" {
+  name        = "${var.application_name}-ELB-SG"
+  description = "Manage ELB Traffic"
+  vpc_id      = module.network.vpc_id
 
-  dynamic "ingress" {
-    for_each = ["8080", "22", "80"]
-    content {
-      from_port   = ingress.value
-      to_port     = ingress.value
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
-    }
+  ingress {
+    description = "allow-http-${var.frontend_port}"
+    from_port   = var.frontend_port
+    to_port     = var.frontend_port
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
   }
+
   egress {
     from_port   = 0
     to_port     = 0
@@ -19,7 +19,32 @@ resource "aws_security_group" "web" {
   }
 
   tags = {
-    Name  = "Security Group"
-    Owner = "Mihail Egorin"
+    Environment = "web_app"
+  }
+}
+
+resource "aws_security_group" "application_server_security_group" {
+  name        = "${var.application_name}-Server-SG"
+  description = "Manage traffic to app servers"
+  vpc_id      = module.network.vpc_id
+
+
+  ingress {
+    description = "allow-http-${var.backend_port}"
+    from_port   = var.backend_port
+    to_port     = var.backend_port
+    protocol    = "tcp"
+    security_groups = [aws_security_group.elb_security_group.id]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Environment = "web_app"
   }
 }

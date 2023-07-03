@@ -1,10 +1,6 @@
-data "aws_availability_zones" "available" {}
-
-resource "aws_default_vpc" "default" {}
-
-resource "aws_default_subnet" "default_az1" {
-  availability_zone = data.aws_availability_zones.available.names[0]
-}
-resource "aws_default_subnet" "default_az2" {
-  availability_zone = data.aws_availability_zones.available.names[1]
+module "network" {
+  source = "./network"
+  application_name = var.application_name
+  subnets = var.subnets
+  vpc_cidr = var.vpc_cidr
 }
