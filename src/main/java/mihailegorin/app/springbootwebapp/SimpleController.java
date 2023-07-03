@@ -34,4 +34,9 @@ public class SimpleController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping(value = {"/greet"})
+    public ResponseEntity<String> greet() {
+        return ResponseEntity.ok("Hello!");
+    }
+
 }
