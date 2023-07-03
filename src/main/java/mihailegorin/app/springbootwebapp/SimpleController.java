@@ -28,7 +28,7 @@ public class SimpleController {
         final var response = GetServerStatusResponse.builder()
                 .serverIp(ip)
                 .serverTime(new Date().toString())
-                .message("Server is working! Have a nice day :)")
+                .message("Server is working! Have a nice day :)     V-1")
                 .build();
 
         return ResponseEntity.ok(response);
